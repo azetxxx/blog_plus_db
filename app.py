@@ -1,11 +1,15 @@
+import os
 from flask import Flask, render_template, redirect, url_for, request
 from flask_bootstrap import Bootstrap5
+import psycopg2
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired, URL
 from flask_ckeditor import CKEditor, CKEditorField
 from datetime import date
+
+
 
 '''
 Make sure the required packages are installed:
@@ -25,7 +29,8 @@ app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
 Bootstrap5(app)
 
 # CONNECT TO DB
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///posts.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
+# postgres://az_blog_db_user:bZg6VIkrUrA04AybCGy3b7dOM8OnI46M@dpg-cj3bd7h8g3n1jkifke8g-a.frankfurt-postgres.render.com/az_blog_db
 db = SQLAlchemy()
 db.init_app(app)
 
