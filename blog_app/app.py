@@ -12,6 +12,7 @@ from run import app
 
 
 def create_app():
+    print("🔥🔥🔥 RUN function")
     app = Flask(__name__)
     app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
     Bootstrap5(app)
