@@ -1,10 +1,11 @@
+{% from "bootstrap5/form.html" import render_form %}
 {% block content %}
 {% include "header.html" %}
 
 <!-- Page Header -->
 <header
   class="masthead"
-  style="background-image: url('../static/assets/img/edit-bg.jpg'"
+  style="background-image: url('../static/assets/img/edit-bg.jpg')"
 >
   <div class="container position-relative px-4 px-lg-5">
     <div class="row gx-4 gx-lg-5 justify-content-center">
@@ -25,7 +26,11 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto">
-        <!-- TODO:-Add CKEditor and render the form here -->
+
+        {{ ckeditor.load() }}
+        {{ ckeditor.config(name='body') }}
+
+        {{ render_form(form, novalidate=True, button_map={"submit": "primary"}) }}
 
       </div>
     </div>

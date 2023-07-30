@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, request
 from flask_bootstrap import Bootstrap5
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
@@ -60,9 +60,49 @@ def show_post(post_id):
     return render_template("post.html", post=requested_post)
 
 
-# TODO: add_new_post() to create a new blog post
+app.config['CKEDITOR_PKG_TYPE'] = "basic"
+ckeditor = CKEditor(app)
+# CKEDITOR_SERVE_LOCAL = True
+
+
+# Create a new blog post / WTForm
+class PostForm(FlaskForm):
+    title = StringField('Title', validators=[DataRequired()])
+    subtitle = StringField('Subtitle')
+    author = StringField('Author')
+    img_url = StringField('Image URL', validators=[URL(), DataRequired()])
+    body = CKEditorField('Body', validators=[DataRequired()])
+    submit = SubmitField('Submit Post')
+
+# add_new_post() to create a new blog post
+@app.route('/new-post', methods=['GET', 'POST'])
+def add_new_post():
+    form = PostForm()
+    if form.validate_on_submit():
+        new_post = BlogPost(
+            title=form.title.data,
+            subtitle=form.subtitle.data,
+            date=date.today().strftime("%d %B %Y"),
+            img_url=form.img_url.data,
+            body=form.body.data,
+            author=form.author.data,
+
+        )
+        db.session.add(new_post)
+        db.session.commit()
+        return redirect(url_for('get_all_posts'))
+    return render_template("make-post.html", form=form)
+
 
 # TODO: edit_post() to change an existing blog post
+# @app.route('edit-post/<post_id>', methods=['GET'])
+# def edit_post(post_id):
+#     pass
+
+
+#     return render_template("make-post.html", form=form)
+
+
 
 # TODO: delete_post() to remove a blog post from the database
 
