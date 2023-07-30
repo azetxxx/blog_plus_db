@@ -53,11 +53,11 @@ def get_all_posts():
     return render_template("index.html", all_posts=posts)
 
 
-@app.route('/post/<post_id>')
+@app.route('/post/<int:post_id>')
 def show_post(post_id):
     # Retrieve a BlogPost from the database based on the post_id
     requested_post = db.get_or_404(BlogPost, post_id)
-    return render_template("post.html", post=requested_post)
+    return render_template("post.html", post=requested_post, post_id=post_id)
 
 
 app.config['CKEDITOR_PKG_TYPE'] = "basic"
@@ -91,16 +91,22 @@ def add_new_post():
         db.session.add(new_post)
         db.session.commit()
         return redirect(url_for('get_all_posts'))
-    return render_template("make-post.html", form=form)
+    return render_template("make-post.html", form=form, link_source="Create New Post")
 
 
 # TODO: edit_post() to change an existing blog post
-# @app.route('edit-post/<post_id>', methods=['GET'])
-# def edit_post(post_id):
-#     pass
-
-
-#     return render_template("make-post.html", form=form)
+@app.route('/edit-post/<int:post_id>', methods=['GET', 'POST'])
+def edit_post(post_id):
+    post = db.get_or_404(BlogPost, post_id)
+    edit_post = PostForm(
+        title=post.title,
+        subtitle=post.subtitle,
+        date=date.today().strftime("%d %B %Y"),
+        img_url=post.img_url,
+        body=post.body,
+        author=post.author,
+    )
+    return render_template("make-post.html", form=edit_post, link_source="Edit Post")
 
 
 
