@@ -24,15 +24,18 @@ pip3 install -r requirements.txt
 This will install the packages from the requirements.txt for this project.
 '''
 
-app = Flask(__name__)
-app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
-Bootstrap5(app)
+def create_app():
+    app = Flask(__name__)
+    app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
+    Bootstrap5(app)
 
-# CONNECT TO DB
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
-# postgres://az_blog_db_user:bZg6VIkrUrA04AybCGy3b7dOM8OnI46M@dpg-cj3bd7h8g3n1jkifke8g-a.frankfurt-postgres.render.com/az_blog_db
-db = SQLAlchemy()
-db.init_app(app)
+    # CONNECT TO DB
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
+    # postgres://az_blog_db_user:bZg6VIkrUrA04AybCGy3b7dOM8OnI46M@dpg-cj3bd7h8g3n1jkifke8g-a.frankfurt-postgres.render.com/az_blog_db
+    db = SQLAlchemy()
+    db.init_app(app)
+
+    return app
 
 
 # CONFIGURE TABLE
