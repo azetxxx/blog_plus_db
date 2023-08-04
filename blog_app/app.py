@@ -12,7 +12,7 @@ import os
 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.environ.get("BLOG_APP")
+app.config['SECRET_KEY'] = os.environ.get("BLOG_DB_KEY")
 Bootstrap5(app)
 
 # CONNECT TO DB
