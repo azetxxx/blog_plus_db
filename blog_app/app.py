@@ -8,16 +8,15 @@ from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired, URL
 from flask_ckeditor import CKEditor, CKEditorField
 from datetime import date
-# from run import app
+import os
 
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
+app.config['SECRET_KEY'] = os.environ.get("BLOG_APP")
 Bootstrap5(app)
 
 # CONNECT TO DB
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
-# postgres://az_blog_db_user:bZg6VIkrUrA04AybCGy3b7dOM8OnI46M@dpg-cj3bd7h8g3n1jkifke8g-a.frankfurt-postgres.render.com/az_blog_db
 db = SQLAlchemy()
 db.init_app(app)
 
